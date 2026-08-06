@@ -207,6 +207,14 @@ http://localhost:8501
 
 ---
 
+# 📷 Screenshot
+
+## Home Page
+
+![Home](ss/1.png)
+
+---
+
 # 📋 Interview Workflow
 
 1. Candidate selects target role.
