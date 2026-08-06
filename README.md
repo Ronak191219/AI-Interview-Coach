@@ -211,6 +211,8 @@ http://localhost:8501
 
 ## Home Page
 
+![Home](ss/2.png)
+
 ![Home](ss/1.png)
 
 ---
