@@ -1,0 +1,27 @@
+# Python Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+env/
+venv/
+ENV/
+
+# Environment Variables & Secrets
+.env
+
+# Streamlit Local Config
+.streamlit/
+
+# Generated Local Output Data
+saved_reports/*
+!saved_reports/.gitkeep
+
+# System & IDE Files
+*.log
+.DS_Store
+.idea/
+.vscode/
