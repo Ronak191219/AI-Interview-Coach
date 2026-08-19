@@ -168,7 +168,7 @@ elif st.session_state.interview_started:
             except Exception as e:
                 err_msg = str(e)
                 if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
-                    st.error("⚠️ Gemini API Rate limit hit hui hai. 10-15 seconds wait karke apna answer dobara submit karein.")
+                    st.error("⚠️ Gemini API Rate limit hited. Wait for 10-15 seconds.")
                 else:
                     st.error(f"⚠️ Error occurred: {err_msg}")
 

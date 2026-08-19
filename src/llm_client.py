@@ -16,7 +16,7 @@ class LLMClient:
             api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY nahi mili. Streamlit Secrets ya .env check karein.")
-        self.model_name = os.environ.get("MODEL_NAME", "gemini-2.5-flash")
+        self.model_name = os.environ.get("MODEL_NAME", "gemini-1.5-flash")
         self.client = genai.Client(api_key=api_key)
     def generate(self, system_prompt: str, user_prompt: str) -> str:
         """Text generation method for agents calling generate()"""
@@ -52,7 +52,6 @@ class LLMClient:
                 }
                 if response_schema:
                     config_args["response_schema"] = response_schema
-
                 response = self.client.models.generate_content(
                     model=self.model_name,
                     contents=user_prompt,
