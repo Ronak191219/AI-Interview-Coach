@@ -7,24 +7,19 @@ from google.genai.errors import ClientError, ServerError
 
 class LLMClient:
     def __init__(self):
-        # 1. API Key fetch karna (Secrets -> Env)
         api_key = None
         try:
             api_key = st.secrets.get("GEMINI_API_KEY")
         except Exception:
             pass
-
         if not api_key:
             api_key = os.environ.get("GEMINI_API_KEY")
-
         if not api_key:
             raise ValueError("GEMINI_API_KEY nahi mili. Streamlit Secrets ya .env check karein.")
-
-        # 2. Model Name fetch karna
         self.model_name = os.environ.get("MODEL_NAME", "gemini-2.5-flash")
         self.client = genai.Client(api_key=api_key)
-
-    def generate_text(self, system_prompt: str, user_prompt: str) -> str:
+    def generate(self, system_prompt: str, user_prompt: str) -> str:
+        """Text generation method for agents calling generate()"""
         max_retries = 3
         for attempt in range(max_retries):
             try:
@@ -43,8 +38,11 @@ class LLMClient:
                     raise e
             except Exception as e:
                 raise e
-
+    def generate_text(self, system_prompt: str, user_prompt: str) -> str:
+        """Alias for generate()"""
+        return self.generate(system_prompt, user_prompt)
     def generate_json(self, system_prompt: str, user_prompt: str, response_schema=None) -> str:
+        """JSON generation method for structured output"""
         max_retries = 3
         for attempt in range(max_retries):
             try:
