@@ -8,7 +8,7 @@ Built with **Python**, **Google Gemini 2.5 Flash**, and **Streamlit**.
 
 ## 🔗 Quick Links
 
-- 🚀 **Live Demo:**
+- 🚀 **Live Demo:** https://ai-interview-coach-ronak.streamlit.app/
 
 ---
 
