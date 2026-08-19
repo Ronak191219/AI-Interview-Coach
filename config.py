@@ -1,8 +1,15 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Directories
+BASE_DIR = Path(__file__).resolve().parent
+PROMPTS_DIR = BASE_DIR / "prompts"
+REPORTS_DIR = BASE_DIR / "saved_reports"
+
+# API & Model Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 LLM_MODEL = os.getenv("LLM_MODEL", "gemini-1.5-flash")
 MODEL_NAME = LLM_MODEL
