@@ -46,6 +46,12 @@ The candidate displayed several commendable strengths throughout the interview:
 
 ### 5. Actionable Preparation Plan
 
-1.  **Master the STAR Method for Technical Stories:** Prepare detailed answers using Situation, Task, Action, Result.
-2.  **Deep Dive into Specific Implementation Details:** Focus on concrete metrics, architecture diagrams, and specific design choices.
-3.  **Anticipate "How" and "Why" Follow-ups:** Prepare for deeper probing questions on trade-offs and edge cases.
+1. Do NOT give generic career advice (like generic STAR method or general interview tips).
+2. Directly analyze the turns where the candidate scored low (< 7/10) or gave incomplete answers.
+3. Provide 3-4 concrete, topic-specific action items based on the actual interview gaps.
+   Each item must include:
+   - Topic to Study (e.g., Database Transactions & ACID isolation, Circuit Breaker patterns).
+   - Practical Task (e.g., Implement a retry mechanism with idempotency key in FastAPI).
+   - Target System/Scenario (e.g., Design a high-load payment API scenario).
+
+   
