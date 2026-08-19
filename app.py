@@ -43,7 +43,7 @@ candidate_name = st.sidebar.text_input("Candidate Name", value="Ronak")
 target_role = st.sidebar.text_input("Target Role", value="AI Engineer")
 candidate_background = st.sidebar.text_area(
     "Background / Resume Snippet", 
-    value="3 years experience with Python, Machine Learning, Generative AI, FastAPI and MySQL."
+    value="3 years experience with Python, Machine Learning, Generative AI, FastAPI and PostgreSQL."
 )
 focus_area = st.sidebar.selectbox(
     "Focus Area",
@@ -53,22 +53,12 @@ focus_area = st.sidebar.selectbox(
 start_button = st.sidebar.button("🚀 Start / Restart Interview", type="primary")
 
 if start_button:
-    # Handle Pydantic model field matching safely
-    try:
-        profile = CandidateProfile(
-            name=candidate_name if candidate_name else "Candidate",
-            target_role=target_role,
-            background=candidate_background,
-            focus_area=focus_area
-        )
-    except Exception:
-        profile = CandidateProfile(
-            candidate_name=candidate_name if candidate_name else "Candidate",
-            target_role=target_role,
-            candidate_background=candidate_background,
-            focus_area=focus_area
-        )
-
+    profile = CandidateProfile(
+        candidate_name=candidate_name if candidate_name else "Candidate",
+        target_role=target_role,
+        candidate_background=candidate_background,
+        focus_area=focus_area
+    )
     with st.spinner("Connecting with Interviewer Agent..."):
         try:
             orchestrator = InterviewOrchestrator(profile)
@@ -156,31 +146,24 @@ elif st.session_state.interview_started:
 
         if user_input:
             st.session_state.messages.append({"role": "user", "content": user_input})
-            with st.spinner("AI evaluating your answer..."):
-                try:
-                    st.session_state.orchestrator.process_turn(
-                        st.session_state.current_question,
-                        user_input
-                    )
-                    
-                    turns_completed = len(st.session_state.orchestrator.history)
+            
+            with st.spinner("Evaluator Agent is assessing your answer..."):
+                st.session_state.orchestrator.process_turn(
+                    st.session_state.current_question, 
+                    user_input
+                )
 
-                    if turns_completed >= MAX_INTERVIEW_TURNS:
-                        st.session_state.interview_finished = True
-                        st.rerun()
-                    else:
-                        with st.spinner("Interviewer Agent is deciding next question..."):
-                            next_q = st.session_state.orchestrator.get_next_question()
-                            st.session_state.current_question = next_q
-                            st.session_state.messages.append({"role": "assistant", "content": next_q})
-                        st.rerun()
-                        
-                except Exception as e:
-                    err_msg = str(e)
-                    if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
-                        st.error("⚠️ Gemini API Rate limit hit hui hai. 10-15 seconds ruk kar dobara answer submit karein.")
-                    else:
-                        st.error(f"⚠️ Error occurred: {err_msg}")
+            turns_completed = len(st.session_state.orchestrator.history)
+
+            if turns_completed >= MAX_INTERVIEW_TURNS:
+                st.session_state.interview_finished = True
+                st.rerun()
+            else:
+                with st.spinner("Interviewer Agent is deciding next question..."):
+                    next_q = st.session_state.orchestrator.get_next_question()
+                    st.session_state.current_question = next_q
+                    st.session_state.messages.append({"role": "assistant", "content": next_q})
+                st.rerun()
 
     # Generate and Display Final Coaching Report
     if st.session_state.interview_finished:
