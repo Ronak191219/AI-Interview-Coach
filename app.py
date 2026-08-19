@@ -144,26 +144,33 @@ elif st.session_state.interview_started:
                 st.session_state.interview_finished = True
                 st.rerun()
 
-        if user_input:
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            
-            with st.spinner("Evaluator Agent is assessing your answer..."):
+    if user_input:
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.spinner("AI evaluating your answer..."):
+            try:
                 st.session_state.orchestrator.process_turn(
-                    st.session_state.current_question, 
+                    st.session_state.current_question,
                     user_input
                 )
+                
+                turns_completed = len(st.session_state.orchestrator.history)
 
-            turns_completed = len(st.session_state.orchestrator.history)
-
-            if turns_completed >= MAX_INTERVIEW_TURNS:
-                st.session_state.interview_finished = True
-                st.rerun()
-            else:
-                with st.spinner("Interviewer Agent is deciding next question..."):
-                    next_q = st.session_state.orchestrator.get_next_question()
-                    st.session_state.current_question = next_q
-                    st.session_state.messages.append({"role": "assistant", "content": next_q})
-                st.rerun()
+                if turns_completed >= MAX_INTERVIEW_TURNS:
+                    st.session_state.interview_finished = True
+                    st.rerun()
+                else:
+                    with st.spinner("Interviewer Agent is deciding next question..."):
+                        next_q = st.session_state.orchestrator.get_next_question()
+                        st.session_state.current_question = next_q
+                        st.session_state.messages.append({"role": "assistant", "content": next_q})
+                    st.rerun()
+                    
+            except Exception as e:
+                err_msg = str(e)
+                if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
+                    st.error("⚠️ Gemini API Rate limit hit hui hai. 10-15 seconds wait karke apna answer dobara submit karein.")
+                else:
+                    st.error(f"⚠️ Error occurred: {err_msg}")
 
     # Generate and Display Final Coaching Report
     if st.session_state.interview_finished:

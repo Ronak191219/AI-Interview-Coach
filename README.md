@@ -6,6 +6,12 @@ Built with **Python**, **Google Gemini 2.5 Flash**, and **Streamlit**.
 
 ---
 
+## 🔗 Quick Links
+
+- 🚀 **Live Demo:**
+
+---
+
 ## 🚀 Features
 
 - 🤖 AI-powered mock interviews
