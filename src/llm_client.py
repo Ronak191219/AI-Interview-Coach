@@ -4,23 +4,25 @@ import streamlit as st
 from google import genai
 from google.genai import types
 from google.genai.errors import ClientError, ServerError
-from config import GEMINI_API_KEY, MODEL_NAME
 
 class LLMClient:
     def __init__(self):
-        # Streamlit secrets ya local env se key load karega
-        api_key = GEMINI_API_KEY
-        if not api_key:
-            try:
-                api_key = st.secrets.get("GEMINI_API_KEY", "")
-            except Exception:
-                api_key = os.environ.get("GEMINI_API_KEY", "")
+        # 1. API Key fetch karna (Secrets -> Env)
+        api_key = None
+        try:
+            api_key = st.secrets.get("GEMINI_API_KEY")
+        except Exception:
+            pass
 
         if not api_key:
-            raise ValueError("GEMINI_API_KEY nahi mili. Secrets ya .env check karein.")
+            api_key = os.environ.get("GEMINI_API_KEY")
 
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY nahi mili. Streamlit Secrets ya .env check karein.")
+
+        # 2. Model Name fetch karna
+        self.model_name = os.environ.get("MODEL_NAME", "gemini-2.5-flash")
         self.client = genai.Client(api_key=api_key)
-        self.model_name = MODEL_NAME
 
     def generate_text(self, system_prompt: str, user_prompt: str) -> str:
         max_retries = 3
